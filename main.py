@@ -1,0 +1,17 @@
+from fastapi import FastAPI
+from database.connection import connect_to_mongo
+from routes.auth import router as auth_router
+from routes.get_users import router as get_user
+connect_to_mongo()
+
+app=FastAPI(
+    title="Tour & Travel Serivices API",
+    version="1.0.0",
+)
+
+app.include_router(auth_router)
+app.include_router(get_user)
+
+@app.get("/health")
+async def health_check():
+    return {"status":"ok" , "mongodb":"Connected ✅"}
